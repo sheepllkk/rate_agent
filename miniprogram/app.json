@@ -1,0 +1,11 @@
+{
+  "pages": ["pages/index/index"],
+  "window": {
+    "navigationBarTitleText": "汇率监测预警智能体",
+    "navigationBarBackgroundColor": "#185FA5",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#F1EFE8",
+    "enablePullDownRefresh": true
+  },
+  "style": "v2"
+}

@@ -1,0 +1,129 @@
+<view class="wrap">
+  <!-- 顶部深蓝英雄区：标题 + 数据总览 -->
+  <view class="hero">
+    <view class="hero-title">汇率监测预警智能体</view>
+    <view class="hero-sub">感知 · 思考 · 行动</view>
+    <view class="stats">
+      <view class="stat">
+        <view class="stat-num">{{rates.length}}</view>
+        <view class="stat-label">实时监控</view>
+      </view>
+      <view class="stat">
+        <view class="stat-num {{todayAlerts > 0 ? 'stat-hot' : ''}}">{{todayAlerts}}</view>
+        <view class="stat-label">今日预警</view>
+      </view>
+      <view class="stat">
+        <view class="stat-num stat-time">{{updatedAt || '—'}}</view>
+        <view class="stat-label">最近更新</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 预警横幅：真实触发=红色警示；电脑端演示=蓝色演示横幅（证明一体的系统） -->
+  <view wx:if="{{triggeredList.length}}" class="banner">
+    <view class="banner-dot"></view>
+    <view class="banner-text">
+      <text wx:for="{{triggeredList}}" wx:key="currency">{{item.currency}}({{item.code}}) {{item.changeText}} </text>
+      触发预警，邮件已发出
+    </view>
+  </view>
+  <view wx:elif="{{bannerDemo}}" class="banner banner-demo">
+    <view class="banner-dot banner-dot-demo"></view>
+    <view class="banner-text">
+      【演示】电脑端模拟 {{bannerDemo.currency_pair}} {{bannerDemo.fluctuation}} —— 预警链路验证通过
+    </view>
+  </view>
+
+  <view wx:if="{{error}}" class="err">{{error}}</view>
+
+  <!-- 实时牌价 -->
+  <view class="card">
+    <view class="card-title">实时牌价
+      <view class="seg">
+        <text class="seg-item {{viewMode === 'monitor' ? 'seg-on' : ''}}"
+              bindtap="toggleView" data-mode="monitor">我的监控</text>
+        <text class="seg-item {{viewMode === 'all' ? 'seg-on' : ''}}"
+              bindtap="toggleView" data-mode="all">全部币种</text>
+      </view>
+    </view>
+    <view class="row {{chartCur === item.currency ? 'row-active' : ''}}"
+          wx:for="{{displayedRates}}" wx:key="currency"
+          bindtap="onRowTap" data-cur="{{item.currency}}">
+      <view class="pulse {{item.triggered ? 'pulse-hot' : ''}}"></view>
+      <view class="left">
+        <view class="name">{{item.currency}} <text class="code">{{item.code}}/CNY</text></view>
+        <view class="sub">{{item.dayText}}</view>
+      </view>
+      <view class="right">
+        <view class="rate">{{item.rateText}}</view>
+        <view class="chg {{item.up ? 'up' : 'down'}}">{{item.arrow}} {{item.changeText}}</view>
+      </view>
+      <view wx:if="{{viewMode === 'all' && !item.monitored}}" class="add-tag"
+            catchtap="addToMonitor" data-cur="{{item.currency}}">+监控</view>
+    </view>
+    <view wx:if="{{!displayedRates.length && !error}}" class="empty">暂无数据，等待首轮采集…</view>
+  </view>
+
+  <!-- 走势图 -->
+  <view class="card">
+    <view class="card-title">{{chartCur || '走势'}} · {{chartRange > 1 ? '近一周走势' : '当日走势'}}<text class="card-hint">{{chartHint}}</text></view>
+    <view class="chip-row">
+      <view class="chip {{chartRange === 1 ? 'chip-on' : ''}}" data-days="1" bindtap="onChartRange">当日</view>
+      <view class="chip {{chartRange === 7 ? 'chip-on' : ''}}" data-days="7" bindtap="onChartRange">近一周</view>
+    </view>
+    <canvas type="2d" id="fxchart" class="chart"></canvas>
+  </view>
+
+  <!-- 监控设置 -->
+  <view class="card">
+    <view class="card-title">监控设置<text class="card-hint">保存后下一轮采集生效</text></view>
+    <view class="set-label">监控币种（点选切换）</view>
+    <view class="chip-row">
+      <view class="chip {{item.on ? 'chip-on' : ''}}" wx:for="{{curChips}}" wx:key="name"
+            bindtap="toggleCurrency" data-cur="{{item.name}}">{{item.name}}</view>
+    </view>
+    <view class="set-label">各币种预警阈值（%）</view>
+    <view class="th-row" wx:for="{{currencies}}" wx:key="*this">
+      <text class="th-name">{{item}}</text>
+      <input class="th-input" type="digit" value="{{thresholdsText[item]}}"
+             bindinput="onThresholdInput" data-cur="{{item}}" />
+    </view>
+    <button class="save-btn" size="mini" loading="{{saving}}" bindtap="saveSettings">保存设置</button>
+    <view wx:if="{{saveMsg}}" class="sub-msg {{saveOk ? 'sub-ok' : 'sub-bad'}}">{{saveMsg}}</view>
+  </view>
+
+  <!-- 预警订阅 -->
+  <view class="card">
+    <view class="card-title">预警订阅</view>
+    <view class="sub-tip">开启后无需保持小程序运行，触发预警时邮件会自动送达您的邮箱。</view>
+    <view class="sub-row">
+      <input class="sub-input" placeholder="填写您的邮箱" value="{{email}}" bindinput="onEmailInput" />
+      <button class="sub-btn" size="mini" loading="{{subscribing}}" bindtap="subscribe">开启预警</button>
+    </view>
+    <view wx:if="{{subMsg}}" class="sub-msg {{subOk ? 'sub-ok' : 'sub-bad'}}">{{subMsg}}</view>
+  </view>
+
+  <!-- 预警记录 -->
+  <view class="card">
+    <view class="card-title">预警记录<text class="card-hint">真实数据，自部署起积累</text></view>
+    <view class="chip-row">
+      <view class="chip {{item.on ? 'chip-on' : ''}}" wx:for="{{rangeChips}}" wx:key="days"
+            bindtap="setRange" data-days="{{item.days}}">{{item.label}}</view>
+    </view>
+    <view class="chip-row">
+      <view class="chip {{item.on ? 'chip-on' : ''}}" wx:for="{{pairChips}}" wx:key="code"
+            bindtap="toggleAlertCur" data-cur="{{item.code}}">{{item.code}} ({{item.n}})</view>
+    </view>
+    <view class="alert" wx:for="{{filteredAlerts}}" wx:key="index">
+      <view class="alert-head">
+        <text class="sev {{item.severity === '紧急' ? 'sev-hot' : 'sev-warn'}}">{{item.severity || '预警'}}</text>
+        <text class="pair">{{item.currency_pair}}</text>
+        <text class="time">{{item.created_at}}</text>
+      </view>
+      <view class="alert-body">{{item.reason}}</view>
+    </view>
+    <view wx:if="{{!filteredAlerts.length}}" class="empty">所选范围内暂无真实预警记录</view>
+  </view>
+
+  <button class="refresh" loading="{{loading}}" bindtap="refresh">手动刷新</button>
+</view>

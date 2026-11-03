@@ -1,0 +1,49 @@
+{
+  "poll_interval_seconds": 60,
+  "currencies": [
+    "美元",
+    "欧元",
+    "港币",
+    "英镑",
+    "日元",
+    "澳大利亚元",
+    "加拿大元"
+  ],
+  "thresholds_pct": {
+    "美元": 0.2,
+    "欧元": 0.3,
+    "港币": 0.3,
+    "英镑": 0.3,
+    "日元": 0.3,
+    "澳大利亚元": 0.1,
+    "加拿大元": 0.3,
+    "默认": 0.1
+  },
+  "llm": {
+    "api_base": "https://your-llm-gateway.example.com/v1",
+    "model": "your-model-name",
+    "api_key": "sk-xxxxxxxxxxxxxxxxxxxxxxxx",
+    "auth": "bearer",
+    "fallback": {
+      "api_base": "https://api.deepseek.com/v1",
+      "model": "deepseek-chat",
+      "api_key": "sk-xxxxxxxxxxxxxxxxxxxxxxxx",
+      "auth": "bearer"
+    }
+  },
+  "alert": {
+    "desktop_toast": true,
+    "email": {
+      "enabled": false,
+      "smtp_host": "smtp.qq.com",
+      "smtp_port": 465,
+      "user": "your_email@qq.com",
+      "password": "your_smtp_auth_code",
+      "to": [
+        "your_email@qq.com"
+      ]
+    },
+    "cooldown_minutes": 30,
+    "episode_hours": 24
+  }
+}

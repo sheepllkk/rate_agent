@@ -1,0 +1,141 @@
+page { background: #EEF2F8; font-size: 28rpx; color: #2C2C2A; }
+
+/* ---------- 顶部深蓝英雄区 ---------- */
+.hero {
+  background: linear-gradient(135deg, #185FA5 0%, #0C447C 100%);
+  padding: 40rpx 32rpx 36rpx;
+  color: #FFF;
+}
+.hero-title { font-size: 38rpx; font-weight: 500; letter-spacing: 2rpx; }
+.hero-sub { font-size: 22rpx; opacity: 0.75; margin-top: 8rpx; letter-spacing: 6rpx; }
+.stats { display: flex; margin-top: 30rpx; }
+.stat { flex: 1; text-align: center; }
+.stat + .stat { border-left: 1rpx solid rgba(255,255,255,0.18); }
+.stat-num { font-size: 40rpx; font-weight: 500; }
+.stat-num.stat-hot { color: #FF9F9F; }
+.stat-num.stat-time { font-size: 30rpx; padding-top: 8rpx; }
+.stat-label { font-size: 22rpx; opacity: 0.7; margin-top: 6rpx; }
+
+.wrap { padding: 24rpx; }
+
+/* ---------- 预警横幅 ---------- */
+.banner {
+  display: flex; align-items: center;
+  background: #A32D2D; color: #FFF;
+  border-radius: 14rpx; padding: 20rpx 24rpx; margin-bottom: 24rpx;
+  animation: bannerPulse 1.2s ease-in-out infinite;
+}
+@keyframes bannerPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(163, 45, 45, 0.45); }
+  50% { box-shadow: 0 0 0 12rpx rgba(163, 45, 45, 0); }
+}
+.banner-dot {
+  width: 16rpx; height: 16rpx; border-radius: 50%;
+  background: #FFD5D5; margin-right: 16rpx; flex-shrink: 0;
+}
+.banner-text { font-size: 26rpx; line-height: 1.5; }
+
+/* 演示横幅：蓝色，区别于真实预警的红色 */
+.banner-demo { background: #185FA5; animation: none; }
+.banner-dot-demo { background: #B5D4F4; }
+
+.err { background: #FCEBEB; color: #791F1F; padding: 16rpx 20rpx; border-radius: 10rpx; margin-bottom: 20rpx; font-size: 24rpx; }
+
+/* ---------- 卡片 ---------- */
+.card {
+  background: #FFFFFF; border-radius: 18rpx; padding: 26rpx; margin-bottom: 24rpx;
+  box-shadow: 0 4rpx 16rpx rgba(12, 68, 124, 0.06);
+}
+.card-title { font-size: 30rpx; font-weight: 500; color: #0C447C; margin-bottom: 18rpx; }
+.card-hint { font-size: 22rpx; color: #8A94A6; font-weight: 400; margin-left: 14rpx; }
+
+/* ---------- 牌价行 ---------- */
+.row {
+  display: flex; align-items: center; padding: 22rpx 8rpx;
+  border-bottom: 1rpx solid #EEF2F8; position: relative; border-radius: 10rpx;
+}
+.row:last-of-type { border-bottom: none; }
+.row-active { background: #F0F6FD; }
+
+.pulse {
+  width: 12rpx; height: 12rpx; border-radius: 50%;
+  background: #639922; margin-right: 18rpx; flex-shrink: 0;
+}
+.pulse-hot {
+  background: #E24B4A;
+  animation: hotPulse 1s ease-in-out infinite;
+}
+@keyframes hotPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(226, 75, 74, 0.5); }
+  50% { box-shadow: 0 0 0 10rpx rgba(226, 75, 74, 0); }
+}
+
+.left { flex: 1; }
+.name { font-size: 30rpx; font-weight: 500; }
+.code { font-size: 22rpx; color: #8A94A6; margin-left: 8rpx; font-weight: 400; }
+.sub { font-size: 22rpx; color: #8A94A6; margin-top: 8rpx; }
+.right { text-align: right; }
+.rate { font-size: 40rpx; font-weight: 500; font-family: "DIN Alternate", "Helvetica Neue", sans-serif; }
+.chg { font-size: 26rpx; margin-top: 4rpx; }
+.up { color: #A32D2D; }
+.down { color: #3B6D11; }
+
+/* ---------- 走势图 ---------- */
+.chart { width: 100%; height: 320rpx; }
+
+/* ---------- 订阅 ---------- */
+.sub-tip { font-size: 22rpx; color: #8A94A6; margin-bottom: 16rpx; line-height: 1.6; }
+.sub-row { display: flex; align-items: center; }
+.sub-input { flex: 1; background: #EEF2F8; border-radius: 10rpx; padding: 16rpx 20rpx; font-size: 26rpx; margin-right: 16rpx; }
+.sub-btn { background: #185FA5; color: #FFF; font-size: 26rpx; border-radius: 10rpx; }
+.sub-msg { font-size: 24rpx; margin-top: 14rpx; }
+.sub-ok { color: #3B6D11; }
+.sub-bad { color: #A32D2D; }
+
+/* ---------- 预警记录 ---------- */
+.alert { padding: 16rpx 0; border-bottom: 1rpx solid #EEF2F8; }
+.alert:last-of-type { border-bottom: none; }
+.alert-head { display: flex; align-items: center; }
+.sev { font-size: 20rpx; padding: 4rpx 12rpx; border-radius: 6rpx; margin-right: 12rpx; }
+.sev-hot { background: #FCEBEB; color: #791F1F; }
+.sev-warn { background: #FAEEDA; color: #854F0B; }
+.pair { font-size: 28rpx; font-weight: 500; flex: 1; }
+.time { font-size: 20rpx; color: #8A94A6; }
+.alert-body { font-size: 24rpx; color: #444441; margin-top: 8rpx; line-height: 1.6; }
+
+/* ---------- 浏览模式切换 ---------- */
+.seg {
+  display: inline-flex; background: #EEF2F8; border-radius: 999rpx;
+  padding: 4rpx; margin-left: 16rpx; vertical-align: middle;
+}
+.seg-item {
+  font-size: 22rpx; padding: 6rpx 20rpx; border-radius: 999rpx; color: #8A94A6;
+}
+.seg-on { background: #185FA5; color: #FFF; }
+.add-tag {
+  font-size: 20rpx; color: #185FA5; border: 1rpx solid #185FA5;
+  border-radius: 999rpx; padding: 4rpx 14rpx; margin-left: 14rpx; flex-shrink: 0;
+}
+
+/* ---------- 监控设置 ---------- */
+.set-label { font-size: 24rpx; color: #8A94A6; margin: 16rpx 0 12rpx; }
+.chip-row { display: flex; flex-wrap: wrap; }
+.chip {
+  font-size: 24rpx; padding: 10rpx 24rpx; border-radius: 999rpx;
+  background: #EEF2F8; color: #444441; margin: 0 14rpx 14rpx 0;
+  border: 1rpx solid #EEF2F8;
+}
+.chip-on { background: #185FA5; color: #FFF; border-color: #185FA5; }
+.th-row { display: flex; align-items: center; margin-bottom: 14rpx; }
+.th-name { width: 140rpx; font-size: 26rpx; }
+.th-input {
+  flex: 1; background: #EEF2F8; border-radius: 10rpx;
+  padding: 12rpx 20rpx; font-size: 26rpx;
+}
+.save-btn { margin-top: 8rpx; background: #185FA5; color: #FFF; border-radius: 10rpx; font-size: 26rpx; }
+
+.empty { text-align: center; color: #8A94A6; font-size: 24rpx; padding: 30rpx 0; }
+.refresh {
+  margin-top: 10rpx; background: #185FA5; color: #FFF;
+  border-radius: 12rpx; font-size: 28rpx;
+}
